@@ -153,7 +153,7 @@ streznik.post('/izpisiRacunBaza', function(zahteva, odgovor) {
   var form = new formidable.IncomingForm();
   form.parse(zahteva, function (napaka, polja, datoteke) {
     strankaIzRacuna(polja.seznamRacunov, function(napaka1, strankaRacuna) {
-      console.log(strankaRacuna);
+      //console.log(strankaRacuna);
       pesmiIzRacuna(polja.seznamRacunov, function(napaka2, pesmiRacuna) {
         //console.log(pesmiRacuna);
         var pesmi = pesmiRacuna;
@@ -164,18 +164,21 @@ streznik.post('/izpisiRacunBaza', function(zahteva, odgovor) {
           odgovor.send("<p>V košarici ni nobene pesmi, \
             zato računa ni mogoče pripraviti!</p>");
         } else {
+          for (var i = 0; i < pesmi.length; i++) {
+            //console.log(pesmi[i].opisArtikla);
+            pesmi[i].stopnja = davcnaStopnja((pesmi[i].opisArtikla.split(' (')[1]).split(')')[0], pesmi[i].zanr);
+          }
           odgovor.setHeader('content-type', 'text/xml');
           odgovor.render('eslog', {
             stranka: strankaRacuna[0], // strankaRacuna je seznam, katerega prvi element je slovar!
             vizualiziraj: true,
             postavkeRacuna: pesmi
-          })  
+          });
         }
       });
     });
-  })
-  
-})
+  });
+});
 
 // Izpis računa v HTML predstavitvi ali izvorni XML obliki
 streznik.get('/izpisiRacun/:oblika', function(zahteva, odgovor) {
