@@ -216,16 +216,15 @@ streznik.post('/prijava', function(zahteva, odgovor) {
     }
     vrniStranke(function(napaka3, stranke) {
       vrniRacune(function(napaka4, racuni) {
-        if (!napaka2) {
+        if (!napaka3 && !napaka4) {
           odgovor.render('prijava', {sporocilo: "Stranka je bila uspešno registrirana.", seznamStrank: stranke, seznamRacunov: racuni});  
         } else {
           odgovor.render('prijava', {sporocilo: "Prišlo je do napake pri registraciji nove stranke. Prosim preverite vnešene podatke in poskusite znova.", seznamStrank: stranke, seznamRacunov: racuni});
         }
-        
-      }) 
+      });
     });
   });
-})
+});
 
 // Prikaz strani za prijavo
 streznik.get('/prijava', function(zahteva, odgovor) {
