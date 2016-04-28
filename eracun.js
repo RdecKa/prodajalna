@@ -200,7 +200,6 @@ var vrniRacune = function(callback) {
 }
 
 // Registracija novega uporabnika
-var stStrank = 0;
 streznik.post('/prijava', function(zahteva, odgovor) {
   var form = new formidable.IncomingForm();
   form.parse(zahteva, function (napaka1, polja, datoteke) {
@@ -235,12 +234,12 @@ streznik.get('/prijava', function(zahteva, odgovor) {
 // Prikaz nakupovalne košarice za stranko
 streznik.post('/stranka', function(zahteva, odgovor) {
   var form = new formidable.IncomingForm();
-  if (!zahteva.session.idStranke) {
-    zahteva.session.idStranke = stStrank;
-    stStrank++;
-  }
 
   form.parse(zahteva, function (napaka1, polja, datoteke) {
+    if (!zahteva.session.idStranke) {
+      //console.log(polja);
+      zahteva.session.idStranke = polja.seznamStrank;
+    }
     odgovor.redirect('/')
   });
 })
