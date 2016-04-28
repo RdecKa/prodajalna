@@ -153,10 +153,11 @@ streznik.post('/izpisiRacunBaza', function(zahteva, odgovor) {
   var form = new formidable.IncomingForm();
   form.parse(zahteva, function (napaka, polja, datoteke) {
     strankaIzRacuna(polja.seznamRacunov, function(napaka1, strankaRacuna) {
-      //console.log(strankaRacuna);
+      console.log(strankaRacuna);
       pesmiIzRacuna(polja.seznamRacunov, function(napaka2, pesmiRacuna) {
         //console.log(pesmiRacuna);
         var pesmi = pesmiRacuna;
+        //console.log(strankaRacuna[0]);
         if (!pesmi) {
           odgovor.sendStatus(500);
         } else if (pesmi.length == 0) {
@@ -165,6 +166,7 @@ streznik.post('/izpisiRacunBaza', function(zahteva, odgovor) {
         } else {
           odgovor.setHeader('content-type', 'text/xml');
           odgovor.render('eslog', {
+            stranka: strankaRacuna[0], // strankaRacuna je seznam, katerega prvi element je slovar!
             vizualiziraj: true,
             postavkeRacuna: pesmi
           })  
